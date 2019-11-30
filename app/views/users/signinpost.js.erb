@@ -6,5 +6,6 @@
     window.location.href = "/welcomes"
   })
 <%else%>
-  $('#error_explanations').html("<%=@user.errors.full_messages.join(",")%>")
+  $('#error_explanations').html('')
+  $('#error_explanations').html("<%=@signin_info[:msg]%>")
 <%end%>
