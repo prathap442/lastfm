@@ -16,14 +16,18 @@ class LastfmService
   def artist_tracks_and_similar_artists(final_res_body_format)
     final_response = final_res_body_format
     response = get_similar_artists
-    similar_artists = response["artist"]["similar"]["artist"]
-    search_history_log_maker
-    final_response[:similar_artists] = similar_artists.map {|similar_artist_info| similar_artist_info["name"]}
-    response_tracks = get_artist_tracks
-    response_tracks["toptracks"]["track"].each do |track_info|
-      final_response[:tracks] << track_info["name"]
-    end
-    final_response[:search_logs] = get_user_search_logs
+    unless (response['error'])
+      similar_artists = response["artist"]["similar"]["artist"]
+      search_history_log_maker
+      final_response[:similar_artists] = similar_artists.map {|similar_artist_info| similar_artist_info["name"]}
+      response_tracks = get_artist_tracks
+      response_tracks["toptracks"]["track"].each do |track_info|
+        final_response[:tracks] << track_info["name"]
+      end
+      final_response[:search_logs] = get_user_search_logs
+    else
+      final_response[:msg] = response['message']
+    end  
     final_response
   end
 

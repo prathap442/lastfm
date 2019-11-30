@@ -3,6 +3,8 @@ The Welcome page
 <button onclick="usersSignoutFunctionality(this)" id="users_signout">Sign out</button>
 <%=text_field_tag 'query', nil,{placeholder: 'Search For Artist Here'}%>
 <button id = "search_artist">Search Artist</button>
+<br/>
+<b id="message_artist_block"></b>
 <table border="2">
   <thead>
   <tr>
@@ -81,7 +83,9 @@ The Welcome page
         $('#search_logs').html('');
         result['search_logs'].forEach((search_log,index)=>{
           searchHistoryBodyFormatter($('#search_logs'),search_log,index)
-        }) 
+        })
+        $('#message_artist_block').html('')
+        $('#message_artist_block').html('<h1>'+result['msg']+'</h1>')
       }
     });
   })
