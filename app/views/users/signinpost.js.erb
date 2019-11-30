@@ -1,0 +1,10 @@
+<%if @signin_info[:verification] == "done"%>
+  $('#error_explanations').html("Signed in Successfully")
+  $('document').ready(function(){
+    alert("1000")
+    localStorage.setItem('x-auth-lfm',"<%=@signin_info[:token]%>")
+    window.location.href = "/welcomes"
+  })
+<%else%>
+  $('#error_explanations').html("<%=@user.errors.full_messages.join(",")%>")
+<%end%>
