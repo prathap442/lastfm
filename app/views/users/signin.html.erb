@@ -1,0 +1,10 @@
+<div id = "error_explanations">
+</div>
+
+<%=form_for @user,remote: true,url: "/users/signinpost",method: :post do |f|%>
+  <%=f.label :username%><br/>
+  <%=f.text_field :username%><br/>
+  <%=f.label :password%><br/>
+  <%=f.text_field :password%><br/>
+  <%=f.submit%>
+<%end%>

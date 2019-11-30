@@ -1,0 +1,111 @@
+This is the page after signup or signin
+The Welcome page
+<button onclick="usersSignoutFunctionality(this)" id="users_signout">Sign out</button>
+<%=text_field_tag 'query', nil,{placeholder: 'Search For Artist Here'}%>
+<button id = "search_artist">Search Artist</button>
+<table border="2">
+  <thead>
+  <tr>
+    <th>Artist Name</th>
+  </tr>
+  </thead>
+  <tbody id="artists">
+  </tbody>    
+</table>
+------------------
+<table border="2">
+  <thead>
+  <tr>
+    <th>Track Name</th>
+  </tr>
+  </thead>
+  <tbody id="tracks">
+  </tbody>    
+</table>
+-----------------
+<table border="2">
+  <thead>
+  <tr>
+    <th>Search Log Name</th>
+    <th>searched at</th>
+  </tr>
+  </thead>
+  <tbody id="search_logs">
+  </tbody>    
+</table>
+
+<div id="search-histories">
+</div>
+<script>
+  function bodyFormatter(target,track,index){
+    let targetElement = target;
+    let tdHtmlNode = document.createElement('td');
+    tdHtmlNode.innerText = track;
+    let trHtmlNode = document.createElement('tr');
+    trHtmlNode.append(tdHtmlNode);
+    targetElement.append(trHtmlNode);
+  }
+  function searchHistoryBodyFormatter(target,log,index){
+    let targetElement = target;
+    let search_log = log
+    let trHtmlNode = document.createElement('tr');
+    let tdHtmlNode = document.createElement('td');
+    tdHtmlNode.innerText = search_log['search_key'];
+    trHtmlNode.append(tdHtmlNode)
+    tdHtmlNode = document.createElement('td');
+    tdHtmlNode.innerText = search_log['searched_at'];
+    trHtmlNode.append(tdHtmlNode);
+    targetElement.append(trHtmlNode);
+  }
+  $('#search_artist').click((e)=>{
+    $.ajax({
+      url: "/users/user_search",
+      type:'post',
+      data: {
+        user_token: localStorage.getItem('x-auth-lfm'),
+        authenticity_token: "<%=form_authenticity_token%>",
+        artist_name: $('#query').val()
+      },
+      success: function(result){
+        console.log(result);
+        let tracksObtained = result['tracks'];
+        $('#tracks').html('');
+        tracksObtained.forEach((track,index)=>{
+          bodyFormatter($('#tracks'),track,index);
+        })
+        $('#artists').html('');
+        let similarArtists = result['similar_artists'];
+        similarArtists.forEach((artist,index)=>{
+          bodyFormatter($('#artists'),artist,index)
+        })
+        $('#search_logs').html('');
+        result['search_logs'].forEach((search_log,index)=>{
+          searchHistoryBodyFormatter($('#search_logs'),search_log,index)
+        }) 
+      }
+    });
+  })
+
+  function usersSignoutFunctionality(target){
+    $('#users_signout').click((e)=>{
+      let storageToken = localStorage.getItem('x-auth-lfm');
+      let authenticity_token = "<%=form_authenticity_token%>";
+      $.ajax({
+        url: "/users/signout",
+        type:'post',
+        data: {
+          user_token: localStorage.getItem('x-auth-lfm'),
+          authenticity_token: "<%=form_authenticity_token%>",
+        },
+        success: function(result){
+          console.log(result)
+          if(result['msg'] == "Successfully Logged out"){
+            window.location.href = result['redirect_url'];
+            localStorage.removeItem('x-auth-lfm')
+          }
+        }
+      });
+
+    })
+  }
+</script>
