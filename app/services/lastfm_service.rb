@@ -1,7 +1,7 @@
 class LastfmService
-  LAST_FM_API_KEY = "1ca2cf614eeaa185c2b61753b434b599"
+  LAST_FM_API_KEY = ENV["LAST_FM_API_KEY"]
   attr_accessor :artist_name
-  def initialize(params = {artist_name: "",user_name: User.new})
+  def initialize(params = {artist_name: "",user: User.new})
     @artist_name = params[:artist_name]
     @user = params[:user]
     @search_history_quantity = 10
@@ -32,11 +32,11 @@ class LastfmService
   end
 
   def get_artist_info_url
-    "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=#{artist_name}&api_key=#{LAST_FM_API_KEY}&format=json"
+    "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=#{@artist_name}&api_key=#{ENV["LAST_FM_API_KEY"]}&format=json"
   end
 
   def get_artist_tracks_url
-    "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=#{artist_name}&api_key=#{LAST_FM_API_KEY}&format=json"
+    "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=#{@artist_name}&api_key=#{ENV["LAST_FM_API_KEY"]}&format=json"
   end
 
   def get_similar_artists
