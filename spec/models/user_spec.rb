@@ -74,4 +74,12 @@ RSpec.describe User, type: :model do
       expect(response[:verification]).to be_eql("failed")
     end
   end
+
+  it 'username presence is a must' do 
+    is_expected.to validate_presence_of(:username)
+  end
+
+  it 'password presence is a must' do 
+    is_expected.to validate_presence_of(:password)
+  end
 end

@@ -1,4 +1,4 @@
-<%if @user.created_at!= nil%>
+<%if @msg == "Successfully registered"%>
   $('#registration_errors').html("<h4><%=@user.username%> You have SignedUp Successfully</h4><br/><a href='/users/signin'>Signin</a>")
 <%else%>
   $('#registration_errors').html("<h4>Unregistered----<%=@user.errors.full_messages.join(",")%></h4>")

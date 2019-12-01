@@ -1,10 +1,14 @@
 class UsersController < ApplicationController
   def create
     @user = User.new(user_signup_params)
-    if @user.save
-      msg = "Successfully registered"  
-    else
-      msg = "Registration failed"
+    respond_to do |format|
+      format.js do
+        if @user.save
+          @msg = "Successfully registered"  
+        else
+          @msg = "Registration failed"
+        end
+      end
     end
   end
  
@@ -31,7 +35,7 @@ class UsersController < ApplicationController
       end  
     else
       render json: {msg: "Logout Unsuccessfull",redirect_url: "/"}.to_json
-    end  
+    end
   end
 
   def user_search
@@ -49,6 +53,7 @@ class UsersController < ApplicationController
       render json: final_response.to_json
     else
       final_response[:msg] = "The User token is invalid"
+      render json: final_response.to_json
     end
   end
 
