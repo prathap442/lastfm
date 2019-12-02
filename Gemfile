@@ -44,6 +44,7 @@ group :development, :test do
   gem 'shoulda'
   gem 'shoulda-callback-matchers'
   gem 'rails-controller-testing'
+  gem 'simplecov'
 end
 
 group :development do

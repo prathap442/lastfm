@@ -14,4 +14,10 @@ RSpec.describe SearchHistory, type: :model do
     sl.save
     expect(sl.save).to be_eql(false)
   end
+  it "responds back with the user doesnot exist when user record is deleted" do
+    taken_user = user1
+    user1.destroy
+    sh = SearchHistoryService.new(taken_user).insert_into_user_search("mona")
+    expect(sh).to be_eql(false)
+  end
 end

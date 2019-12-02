@@ -10,6 +10,7 @@ class SearchHistoryService
         @user.search_histories.create(search_key: search_key)
       rescue ActiveRecord::RecordNotSaved 
         unless @user.id
+          return success
           puts "the user doesnot exist so search history can\'t be created"
         end
       end
